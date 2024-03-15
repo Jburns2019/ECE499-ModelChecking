@@ -1,4 +1,3 @@
-import numpy as np
 from random import random
 from random import randint
 import pip
@@ -6,13 +5,15 @@ import pip
 try:
 	import pydot
 except ImportError as e:
-	pip.main(['install', 'pydot'])
+	pip.main(['install', '--no-python-version-warning', '--force-reinstall', '--upgrade', 'pydot'])
 
 visualization_import_success = False
 try:
 	import pydot
+	(test_graph,) = pydot.graph_from_dot_data('Graph name {A -> B}')
+	test_graph.create_png()
 	visualization_import_success = True
-except ImportError as e:
+except:
 	visualization_import_success = False
 
 def check_assertion(G: list[list], W: list[list], init: int):
@@ -62,12 +63,10 @@ def main():
 					elif len(fsm_trace) == 0:
 						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Passing).png')
 				else:
-					terminal_display_matrix(G, init, f'Graph {i+1}')
+					terminal_display_matrix(G, W, init, f'Graph {graph_number} ({sizes[i]} states - Passing)')
 
 					if len(fsm_trace) > 0:
-						print('\n' + str(fsm_trace))
-
-				print('The fsm passes.' if len(fsm_trace) == 0 else 'The fsm does not pass.')
+						print('Failure trace:\n' + ' -> '.join([str(state) for state in fsm_trace]) + '\n')
 
 def gen_random_fsm(state_count=randint(2, 10)):
 	transition_map = []
@@ -112,23 +111,47 @@ def randfloat(low: int, high: int):
 	'''
 	return random() % (high-low) + low
 
-def terminal_display_matrix(matrix, start_state=0, title=''):
+def terminal_display_matrix(matrix, state_responses, start_state=0, title=''):
 	'''
 	Display the matrix in the terminal.
 	'''
+
 	output_str = ''
 
 	if len(title):
-		output_str = title + f', Starting State - S{start_state}\n'
+		output_str += title + f', Starting State - S{start_state}\n'
+
+	output_str += '\t'.join(['-' if i < 2 else (str(i-2) if i-2 != start_state else f'*{i-2}') for i in range(len(matrix)+2)]) + '\n'
+	output_str += '\t'.join(['_' for i in range(len(matrix)+2)]) + '\n'
 
 	for x in range(len(matrix)):
+		if x == start_state:
+			output_str += '*'
+		
+		output_str += f'{x}\t|\t'
 		for y in range(len(matrix)):
 			output_str += str(matrix[y][x])
 
 			if y < len(matrix) - 1:
-				output_str += '  '
+				output_str += ' \t'
 		
 		output_str += '\n'
+		
+	
+	output_str += '\nConditionals:\n'
+	output_str += '-\t-\tgnt\treq\n'
+	output_str += '\t'.join(['__' for i in range(len(state_responses[0]) + 2)]) + '\n'
+
+	for state_index in range(len(state_responses)):
+		if state_index == start_state:
+			output_str += '*'
+		
+		output_str += f'{state_index}\t|\t'
+
+		output_str += '\t'.join([str(i) for i in state_responses[state_index]])
+	
+		output_str += '\n'
+
 	print(output_str)
 
 def create_graph_visualization(matrix, state_responses, start_state=0, title='test.png'):
@@ -342,3 +365,6 @@ color_list = color_list[1:-1]
 
 if __name__ == "__main__":
 	main()
+
+	if not visualization_import_success:
+		print('\nTo see advanced visualization. Run this program on flip. Trust us, it will be worth it.')
