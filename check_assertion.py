@@ -24,9 +24,7 @@ def check_assertion(G: list[list], W: list[list], init: int):
 	init is an integer indicating the initial state.
 	n is the number of states of the system.
 	'''
-	global graph_number
-
-	for i in range(len(G)):
+	for i in range(len(W)):
 		if W[i][0] == 1:    # if gnt = 1
 			for j in range(len(G)):    # check all the transition from state i to j
 				if G[i][j] and not W[j][1]:    # if the transition occur and if the req is not 1, assertion fails
@@ -58,10 +56,10 @@ def main():
 
 				if visualization_import_success:
 					if len(fsm_trace) > 0:
-						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Non-Passing).png')
-						create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, f'Failing Graph {graph_number+1} Trace {fsm_trace}).png')
+						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Fails Assertion).png')
+						create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, f'Graph {graph_number} ({sizes[i]} states - Fail Assertion Trace {fsm_trace}).png')
 					elif len(fsm_trace) == 0:
-						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Passing).png')
+						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Passes Assertion).png')
 				else:
 					terminal_display_matrix(G, W, init, f'Graph {graph_number} ({sizes[i]} states - Passing)')
 
