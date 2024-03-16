@@ -248,9 +248,6 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title='te
 	(graph,) = pydot.graph_from_dot_data(dot_str)
 	graph.write_png(title)
 
-'''
-All colors available in dot notation. I couldn't figure out how to use hex in a dot file.
-'''
 color_names = '''
 aliceblue	antiquewhite	antiquewhite1	antiquewhite2	antiquewhite3
 antiquewhite4	aqua	aquamarine	aquamarine1	aquamarine2
@@ -419,28 +416,13 @@ steelblue	tan	teal	thistle	tomato
 turquoise	violet	wheat	white	whitesmoke
 yellow	yellowgreen
 '''
+'''
+All colors available in dot notation. I couldn't figure out how to use hex in a dot file.
+'''
 
-'''Turn the website text into a list of colors.'''
 color_list = color_names.replace('\n\n', '').replace('\n', '\t').split('\t')
 color_list = color_list[1:-1]
-
-import os
-import sys
-from pdoc import html
-
-project_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
-documentation_dir = os.path.join(project_dir, "docs")
-if not os.path.isdir(documentation_dir):
-    os.mkdir(documentation_dir)
-
-files = os.listdir(project_dir)
-for file_name in files:
-    if '.py' in file_name:
-        file_name = file_name.replace('.py', '')
-
-        f = open(os.path.join(documentation_dir, file_name + ".html"), "w")
-        f.write(html(file_name))
-        f.close()
+'''Turn the website text into a list of colors.'''
 
 if __name__ == "__main__":
 	main()
