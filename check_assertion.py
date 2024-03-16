@@ -2,6 +2,8 @@ from random import random
 from random import randint
 import pip
 import copy
+import os
+import sys
 
 #Attempt to import pydot. Failing to import pydot will not result in program failure. It will only result in an inferior visualization.
 try:
@@ -55,16 +57,18 @@ def find_trace(G, init, final):
 	#Done if we're already there.
 	if init != final:
 		starting_points = [init]
+		have_visited = []
 
 		found_end = False
-		while not found_end:
+		while not found_end and starting_points:
 			#Breadth first search.
 			init_point = starting_points.pop(0)
 
 			for transitions_index in range(len(G)):
 				#Add connections to the starting point list.
-				if G[init_point][transitions_index] and transitions_index != init_point:
+				if G[init_point][transitions_index] and transitions_index != init_point and not transitions_index in have_visited:
 					starting_points.append(transitions_index)
+					have_visited.append(transitions_index)
 
 				#If there is a better path, make that the new path.
 				if G[init_point][transitions_index] and (len(distance_list[transitions_index]) == 0 or len(distance_list[init_point]) + 1 < len(distance_list[transitions_index])) and transitions_index != init_point:
@@ -85,6 +89,10 @@ def main():
 	'''
 	global graph_number
 	graph_number = 0
+
+	if visualization_import_success:
+		results_path = get_new_result_folder_name()
+		os.mkdir(results_path)
 
 	#The graph sizes.
 	sizes = [5, 10, 15]
@@ -122,6 +130,8 @@ def main():
 					title += 'Passes Assertion'
 
 				if visualization_import_success:
+					title = os.path.join(results_path, title)
+
 					create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, title + ').png')
 					if len(fsm_trace) > 0:
 						create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, title + f' Trace {fsm_trace}).png')
@@ -129,25 +139,30 @@ def main():
 					terminal_display_matrix(G, W, init, title + ')')
 					if len(fsm_trace) > 0:
 						print('Failure trace:\n' + ' -> '.join([str(state) for state in fsm_trace]) + '\n')
+						print('Satisfying trace:\n' + ' -> '.join([str(state) for state in fsm_trace[-2:]]) + '\n')
 
 def gen_random_fsm(state_count=randint(2, 10)):
 	'''
 	Create a completely randomized finite state machine with a given state count.
 	Returns an adjacency matrix, a state_response_grid, and init.
 	'''
-	#Make randomized adjacency matrix.
-	transition_map = []
-	for i in range(state_count):
-		transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .4)))
+	#Random initial state.
+	init_state = randint(0, state_count-1)
 
-	#Prevent transitionless state.
-	for state_num, transition_for_state in enumerate(transition_map):
-		while sum(transition_for_state) < (2 if len(transition_for_state) > 2 else len(transition_for_state) - 1):
-			rand_index = randint(0, len(transition_for_state)-1)
-			while rand_index == state_num:
-				rand_index = randint(0, len(transition_for_state)-1)
-			
-			transition_map[state_num][rand_index] = 1
+	#Make randomized adjacency matrix.
+	#Ensure it is traversable.
+	transition_map = []
+	found_connected_map = False
+	while not found_connected_map:
+		transition_map = []
+		for state in range(state_count):
+			transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .4)))
+
+		found_connected_map = True
+
+		for state in range(len(transition_map)):
+			if state != init_state and not find_trace(transition_map, init_state, state):
+				found_connected_map = False
 
 	#Create a randomized response grid.
 	#	The grid has a higher req/gnt density the more states there are (to promote successfull assertion graphs).
@@ -166,9 +181,6 @@ def gen_random_fsm(state_count=randint(2, 10)):
 			bottom = .5
 
 		state_response_grid.append(get_random_array(0, 2, distribution=randfloat(bottom, top)))
-	
-	#Random initial state.
-	init_state = randint(0, state_count-1)
 
 	return transition_map, state_response_grid, init_state
 
@@ -254,9 +266,10 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title='te
 	Paramater: title - something to differentiate the display.
 	'''
 	dot_str = f'DIGRAPH graph_name ' + '{\n'
+	#Make starting node blue.
+	dot_str += f'S{start_state} [color=blue fontcolor=white style=filled]\n'
+
 	if 'list' in str(type(matrix[0])):
-		#Make starting node blue.
-		dot_str += f'S{start_state} [color=blue fontcolor=white style=filled]\n'
 		#Make any transition bidirectional (without needing to be intelligent about it).
 		dot_str += 'concentrate=true\n'
 	
@@ -284,7 +297,7 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title='te
 	else:
 		#If the matrix is not a list of lists, then it must be a trace, in which case we only need to show state to state (list of sequential states).
 		for x in range(len(matrix)-1):
-			dot_str += f'S{matrix[x]} -> S{matrix[x+1]}\n'
+			dot_str += f'S{matrix[x]} -> S{matrix[x+1]} [label={x+1}{"color=brown style=bold" if x == len(matrix)-2 else ""}]\n'
 
 	dot_str += '}'
 
@@ -293,8 +306,7 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title='te
 	graph.write_png(title)
 
 color_names = '''
-aliceblue	antiquewhite	antiquewhite1	antiquewhite2	antiquewhite3
-antiquewhite4	aqua	aquamarine	aquamarine1	aquamarine2
+aliceblue	aqua	aquamarine	aquamarine1	aquamarine2
 aquamarine3	aquamarine4	azure	azure1	azure2
 azure3	azure4	beige	bisque	bisque1
 bisque2	bisque3	bisque4	black	blanchedalmond
@@ -320,52 +332,12 @@ darkviolet	deeppink	deeppink1	deeppink2	deeppink3
 deeppink4	deepskyblue	deepskyblue1	deepskyblue2	deepskyblue3
 deepskyblue4	dimgray	dimgrey	dodgerblue	dodgerblue1
 dodgerblue2	dodgerblue3	dodgerblue4	firebrick	firebrick1
-firebrick2	firebrick3	firebrick4	floralwhite	forestgreen
-fuchsia	gainsboro	ghostwhite	gold	gold1
+firebrick2	firebrick3	firebrick4	forestgreen
+fuchsia	gainsboro	gold	gold1
 gold2	gold3	gold4	goldenrod	goldenrod1
-goldenrod2	goldenrod3	goldenrod4	gray	gray0
-gray1	gray10	gray100	gray11	gray12
-gray13	gray14	gray15	gray16	gray17
-gray18	gray19	gray2	gray20	gray21
-gray22	gray23	gray24	gray25	gray26
-gray27	gray28	gray29	gray3	gray30
-gray31	gray32	gray33	gray34	gray35
-gray36	gray37	gray38	gray39	gray4
-gray40	gray41	gray42	gray43	gray44
-gray45	gray46	gray47	gray48	gray49
-gray5	gray50	gray51	gray52	gray53
-gray54	gray55	gray56	gray57	gray58
-gray59	gray6	gray60	gray61	gray62
-gray63	gray64	gray65	gray66	gray67
-gray68	gray69	gray7	gray70	gray71
-gray72	gray73	gray74	gray75	gray76
-gray77	gray78	gray79	gray8	gray80
-gray81	gray82	gray83	gray84	gray85
-gray86	gray87	gray88	gray89	gray9
-gray90	gray91	gray92	gray93	gray94
-gray95	gray96	gray97	gray98	gray99
+goldenrod2	goldenrod3	goldenrod4
 green	green1	green2	green3	green4
-greenyellow	grey	grey0	grey1	grey10
-grey100	grey11	grey12	grey13	grey14
-grey15	grey16	grey17	grey18	grey19
-grey2	grey20	grey21	grey22	grey23
-grey24	grey25	grey26	grey27	grey28
-grey29	grey3	grey30	grey31	grey32
-grey33	grey34	grey35	grey36	grey37
-grey38	grey39	grey4	grey40	grey41
-grey42	grey43	grey44	grey45	grey46
-grey47	grey48	grey49	grey5	grey50
-grey51	grey52	grey53	grey54	grey55
-grey56	grey57	grey58	grey59	grey6
-grey60	grey61	grey62	grey63	grey64
-grey65	grey66	grey67	grey68	grey69
-grey7	grey70	grey71	grey72	grey73
-grey74	grey75	grey76	grey77	grey78
-grey79	grey8	grey80	grey81	grey82
-grey83	grey84	grey85	grey86	grey87
-grey88	grey89	grey9	grey90	grey91
-grey92	grey93	grey94	grey95	grey96
-grey97	grey98	grey99	honeydew	honeydew1
+greenyellow	honeydew	honeydew1
 honeydew2	honeydew3	honeydew4	hotpink	hotpink1
 hotpink2	hotpink3	hotpink4	indianred	indianred1
 indianred2	indianred3	indianred4	indigo	invis
@@ -390,8 +362,7 @@ mediumblue	mediumorchid	mediumorchid1	mediumorchid2	mediumorchid3
 mediumorchid4	mediumpurple	mediumpurple1	mediumpurple2	mediumpurple3
 mediumpurple4	mediumseagreen	mediumslateblue	mediumspringgreen	mediumturquoise
 mediumvioletred	midnightblue	mintcream	mistyrose	mistyrose1
-mistyrose2	mistyrose3	mistyrose4	moccasin	navajowhite
-navajowhite1	navajowhite2	navajowhite3	navajowhite4	navy
+mistyrose2	mistyrose3	mistyrose4	moccasin	navy
 navyblue	none	oldlace	olive	olivedrab
 olivedrab1	olivedrab2	olivedrab3	olivedrab4	orange
 orange1	orange2	orange3	orange4	orangered
@@ -426,10 +397,10 @@ turquoise	turquoise1	turquoise2	turquoise3	turquoise4
 violet	violetred	violetred1	violetred2	violetred3
 violetred4	webgray	webgreen	webgrey	webmaroon
 webpurple	wheat	wheat1	wheat2	wheat3
-wheat4	white	whitesmoke	x11gray	x11green
+wheat4	x11gray	x11green
 x11grey	x11maroon	x11purple	yellow	yellow1
 yellow2	yellow3	yellow4	yellowgreen
-aliceblue	antiquewhite	aqua	aquamarine	azure
+aliceblue	aqua	aquamarine	azure
 beige	bisque	black	blanchedalmond	blue
 blueviolet	brown	burlywood	cadetblue	chartreuse
 chocolate	coral	cornflowerblue	cornsilk	crimson
@@ -438,8 +409,8 @@ darkgreen	darkgrey	darkkhaki	darkmagenta	darkolivegreen
 darkorange	darkorchid	darkred	darksalmon	darkseagreen
 darkslateblue	darkslategray	darkslategrey	darkturquoise	darkviolet
 deeppink	deepskyblue	dimgray	dimgrey	dodgerblue
-firebrick	floralwhite	forestgreen	fuchsia	gainsboro
-ghostwhite	gold	goldenrod	gray	grey
+firebrick	forestgreen	fuchsia	gainsboro
+gold	goldenrod	gray	grey
 green	greenyellow	honeydew	hotpink	indianred
 indigo	ivory	khaki	lavender	lavenderblush
 lawngreen	lemonchiffon	lightblue	lightcoral	lightcyan
@@ -449,7 +420,7 @@ lightsteelblue	lightyellow	lime	limegreen	linen
 magenta	maroon	mediumaquamarine	mediumblue	mediumorchid
 mediumpurple	mediumseagreen	mediumslateblue	mediumspringgreen	mediumturquoise
 mediumvioletred	midnightblue	mintcream	mistyrose	moccasin
-navajowhite	navy	oldlace	olive	olivedrab
+navy	oldlace	olive	olivedrab
 orange	orangered	orchid	palegoldenrod	palegreen
 paleturquoise	palevioletred	papayawhip	peachpuff	peru
 pink	plum	powderblue	purple	red
@@ -457,7 +428,7 @@ rosybrown	royalblue	saddlebrown	salmon	sandybrown
 seagreen	seashell	sienna	silver	skyblue
 slateblue	slategray	slategrey	snow	springgreen
 steelblue	tan	teal	thistle	tomato
-turquoise	violet	wheat	white	whitesmoke
+turquoise	violet	wheat
 yellow	yellowgreen
 '''
 '''
@@ -467,6 +438,18 @@ All colors available in dot notation. I couldn't figure out how to use hex in a 
 color_list = color_names.replace('\n\n', '').replace('\n', '\t').split('\t')
 color_list = color_list[1:-1]
 '''Turn the website text into a list of colors.'''
+
+def get_new_result_folder_name():
+	base_directory = os.path.dirname(os.path.abspath(sys.argv[0]))
+	list_of_directory_items = os.listdir(base_directory)
+	list_of_folders = []
+	for directory_item in list_of_directory_items:
+		if 'Results' in directory_item:
+			list_of_folders.append(directory_item)
+	
+	folder_numbers = [0 if len(folder.replace('Results', '')) == 0 else int(folder.replace('Results', '')) for folder in list_of_folders]
+
+	return os.path.join(base_directory, 'Results' + str(max(folder_numbers) + 1))
 
 if __name__ == "__main__":
 	main()
