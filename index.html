@@ -29,6 +29,7 @@
 <pre><code class="python">from random import random
 from random import randint
 import pip
+import copy
 
 #Attempt to import pydot. Failing to import pydot will not result in program failure. It will only result in an inferior visualization.
 try:
@@ -68,6 +69,44 @@ def check_assertion(G: list[list], W: list[list], init: int):
                                         return [i, j]
         return []
 
+def find_trace(G, init, final):
+        &#39;&#39;&#39;
+        Graph search the shortest route between init and final.
+        Parameter: G - Adjacency matrix.
+        Parameter: init - the starting node.
+        Parameter: final - the start of the interesting trace.
+        Returns: route to get from init to final. If they are the same it is an empty list.
+        &#39;&#39;&#39;
+        trace = []
+        distance_list = [[] for i in range(len(G))]
+
+        #Done if we&#39;re already there.
+        if init != final:
+                starting_points = [init]
+
+                found_end = False
+                while not found_end:
+                        #Breadth first search.
+                        init_point = starting_points.pop(0)
+
+                        for transitions_index in range(len(G)):
+                                #Add connections to the starting point list.
+                                if G[init_point][transitions_index] and transitions_index != init_point:
+                                        starting_points.append(transitions_index)
+
+                                #If there is a better path, make that the new path.
+                                if G[init_point][transitions_index] and (len(distance_list[transitions_index]) == 0 or len(distance_list[init_point]) + 1 &lt; len(distance_list[transitions_index])) and transitions_index != init_point:
+                                        distance_list[transitions_index] = copy.deepcopy(distance_list[init_point])
+                                        distance_list[transitions_index].append(init_point)
+                                
+                                #If there is a connection to the end, we&#39;ve found the magic trace.
+                                if transitions_index == final and G[init_point][transitions_index]:
+                                        found_end = True
+                                        trace = distance_list[transitions_index]
+                                        break
+
+        return trace
+
 def main():
         &#39;&#39;&#39;
         The place where all the code happens.
@@ -98,6 +137,12 @@ def main():
                                 #If the visualization libaries imported successfully, use fancy visualization of the graph and the trace. Otherwise use terminal display.
                                 graph_number += 1
 
+                                if fsm_trace:
+                                        shortest_trace = find_trace(G, init, fsm_trace[0])
+                                        shortest_trace.extend(fsm_trace)
+
+                                        fsm_trace = copy.deepcopy(shortest_trace)
+
                                 title = f&#39;Graph {graph_number} ({sizes[i]} states - &#39;
                                 if len(fsm_trace) &gt; 0:
                                         title += &#39;Fails Assertion&#39;
@@ -121,7 +166,7 @@ def gen_random_fsm(state_count=randint(2, 10)):
         #Make randomized adjacency matrix.
         transition_map = []
         for i in range(state_count):
-                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .75)))
+                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .4)))
 
         #Prevent transitionless state.
         for state_num, transition_for_state in enumerate(transition_map):
@@ -168,7 +213,8 @@ def get_random_array(beg: int, length: int, distribution: float = .5):
 def randfloat(low: int, high: int):
         &#39;&#39;&#39;
         Return a bounded float.
-        Param
+        Parameter: low - the lower bound (inclussive).
+        Parameter: high - the upper bound (inclussive).
         &#39;&#39;&#39;
         return random() % (high-low) + low
 
@@ -214,8 +260,6 @@ def terminal_display_matrix(matrix, state_responses, start_state=0, title=&#39;&
         output_str += &#39;\nConditionals:\n&#39;
         output_str += &#39;-\t-\tgnt\treq\n&#39;
         output_str += &#39;\t&#39;.join([&#39;__&#39; for i in range(len(state_responses[0]) + 2)]) + &#39;\n&#39;
-
-
 
         for state_index in range(len(state_responses)):
                 if state_index == start_state:
@@ -461,26 +505,26 @@ if __name__ == &#34;__main__&#34;:
 </details>
 </section>
 <section>
-        <p>Graph 1 (5 states - Fails Assertion Trace [0, 4])</p>
-        <img src="Graph 1 (5 states - Fails Assertion Trace [0, 4]).png" alt="Italian Trulli">
+        <p>Graph 1 (5 states - Fails Assertion Trace [1, 4, 2, 0, 3])</p>
+        <img src="Graph 1 (5 states - Fails Assertion Trace [1, 4, 2, 0, 3]).png">
         <p>Graph 1 (5 states - Fails Assertion)</p>
-        <img src="Graph 1 (5 states - Fails Assertion).png" alt="Italian Trulli">
+        <img src="Graph 1 (5 states - Fails Assertion).png">
         <p>Graph 2 (5 states - Passes Assertion)</p>
-        <img src="Graph 2 (5 states - Passes Assertion).png" alt="Italian Trulli">
+        <img src="Graph 2 (5 states - Passes Assertion).png">
         <br>
-        <p>Graph 3 (10 states - Fails Assertion Trace [1, 3])</p>
-        <img src="Graph 3 (10 states - Fails Assertion Trace [1, 3]).png" alt="Italian Trulli">
+        <p>Graph 3 (10 states - Fails Assertion Trace [4, 3, 0, 7])</p>
+        <img src="Graph 3 (10 states - Fails Assertion Trace [4, 3, 0, 7]).png">
         <p>Graph 3 (10 states - Fails Assertion)</p>
-        <img src="Graph 3 (10 states - Fails Assertion).png" alt="Italian Trulli">
+        <img src="Graph 3 (10 states - Fails Assertion).png">
         <p>Graph 4 (10 states - Passes Assertion)</p>
-        <img src="Graph 4 (10 states - Passes Assertion).png" alt="Italian Trulli">
+        <img src="Graph 4 (10 states - Passes Assertion).png">
         <br>
-        <p>Graph 5 (15 states - Fails Assertion Trace [0, 2])</p>
-        <img src="Graph 5 (15 states - Fails Assertion Trace [0, 2]).png" alt="Italian Trulli">
+        <p>Graph 5 (15 states - Fails Assertion Trace [10, 5, 1, 6])</p>
+        <img src="Graph 5 (15 states - Fails Assertion Trace [10, 5, 1, 6]).png">
         <p>Graph 5 (15 states - Fails Assertion)</p>
-        <img src="Graph 5 (15 states - Fails Assertion).png" alt="Italian Trulli">
+        <img src="Graph 5 (15 states - Fails Assertion).png">
         <p>Graph 6 (15 states - Passes Assertion)</p>
-        <img src="Graph 6 (15 states - Passes Assertion).png" alt="Italian Trulli">
+        <img src="Graph 6 (15 states - Passes Assertion).png">
 </section>
 <section>
 <h2 class="section-title" id="header-variables">Global variables</h2>
@@ -596,6 +640,58 @@ Paramater: title - something to differentiate the display.</p></div>
         graph.write_png(title)</code></pre>
 </details>
 </dd>
+<dt id="check_assertion.find_trace"><code class="name flex">
+<span>def <span class="ident">find_trace</span></span>(<span>G, init, final)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Graph search the shortest route between init and final.
+Parameter: G - Adjacency matrix.
+Parameter: init - the starting node.
+Parameter: final - the start of the interesting trace.
+Returns: route to get from init to final. If they are the same it is an empty list.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def find_trace(G, init, final):
+        &#39;&#39;&#39;
+        Graph search the shortest route between init and final.
+        Parameter: G - Adjacency matrix.
+        Parameter: init - the starting node.
+        Parameter: final - the start of the interesting trace.
+        Returns: route to get from init to final. If they are the same it is an empty list.
+        &#39;&#39;&#39;
+        trace = []
+        distance_list = [[] for i in range(len(G))]
+
+        #Done if we&#39;re already there.
+        if init != final:
+                starting_points = [init]
+
+                found_end = False
+                while not found_end:
+                        #Breadth first search.
+                        init_point = starting_points.pop(0)
+
+                        for transitions_index in range(len(G)):
+                                #Add connections to the starting point list.
+                                if G[init_point][transitions_index] and transitions_index != init_point:
+                                        starting_points.append(transitions_index)
+
+                                #If there is a better path, make that the new path.
+                                if G[init_point][transitions_index] and (len(distance_list[transitions_index]) == 0 or len(distance_list[init_point]) + 1 &lt; len(distance_list[transitions_index])) and transitions_index != init_point:
+                                        distance_list[transitions_index] = copy.deepcopy(distance_list[init_point])
+                                        distance_list[transitions_index].append(init_point)
+                                
+                                #If there is a connection to the end, we&#39;ve found the magic trace.
+                                if transitions_index == final and G[init_point][transitions_index]:
+                                        found_end = True
+                                        trace = distance_list[transitions_index]
+                                        break
+
+        return trace</code></pre>
+</details>
+</dd>
 <dt id="check_assertion.gen_random_fsm"><code class="name flex">
 <span>def <span class="ident">gen_random_fsm</span></span>(<span>state_count=7)</span>
 </code></dt>
@@ -614,7 +710,7 @@ Returns an adjacency matrix, a state_response_grid, and init.</p></div>
         #Make randomized adjacency matrix.
         transition_map = []
         for i in range(state_count):
-                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .75)))
+                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .4)))
 
         #Prevent transitionless state.
         for state_num, transition_for_state in enumerate(transition_map):
@@ -712,6 +808,12 @@ Returns: a randomized list.</p></div>
                                 #If the visualization libaries imported successfully, use fancy visualization of the graph and the trace. Otherwise use terminal display.
                                 graph_number += 1
 
+                                if fsm_trace:
+                                        shortest_trace = find_trace(G, init, fsm_trace[0])
+                                        shortest_trace.extend(fsm_trace)
+
+                                        fsm_trace = copy.deepcopy(shortest_trace)
+
                                 title = f&#39;Graph {graph_number} ({sizes[i]} states - &#39;
                                 if len(fsm_trace) &gt; 0:
                                         title += &#39;Fails Assertion&#39;
@@ -733,7 +835,8 @@ Returns: a randomized list.</p></div>
 </code></dt>
 <dd>
 <div class="desc"><p>Return a bounded float.
-Param</p></div>
+Parameter: low - the lower bound (inclussive).
+Parameter: high - the upper bound (inclussive).</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
@@ -741,7 +844,8 @@ Param</p></div>
 <pre><code class="python">def randfloat(low: int, high: int):
         &#39;&#39;&#39;
         Return a bounded float.
-        Param
+        Parameter: low - the lower bound (inclussive).
+        Parameter: high - the upper bound (inclussive).
         &#39;&#39;&#39;
         return random() % (high-low) + low</code></pre>
 </details>
@@ -808,8 +912,6 @@ Paramater: title - something to differentiate the display.</p></div>
         output_str += &#39;-\t-\tgnt\treq\n&#39;
         output_str += &#39;\t&#39;.join([&#39;__&#39; for i in range(len(state_responses[0]) + 2)]) + &#39;\n&#39;
 
-
-
         for state_index in range(len(state_responses)):
                 if state_index == start_state:
                         output_str += &#39;*&#39;
@@ -844,6 +946,7 @@ Paramater: title - something to differentiate the display.</p></div>
 <ul class="">
 <li><code><a title="check_assertion.check_assertion" href="#check_assertion.check_assertion">check_assertion</a></code></li>
 <li><code><a title="check_assertion.create_graph_visualization" href="#check_assertion.create_graph_visualization">create_graph_visualization</a></code></li>
+<li><code><a title="check_assertion.find_trace" href="#check_assertion.find_trace">find_trace</a></code></li>
 <li><code><a title="check_assertion.gen_random_fsm" href="#check_assertion.gen_random_fsm">gen_random_fsm</a></code></li>
 <li><code><a title="check_assertion.get_random_array" href="#check_assertion.get_random_array">get_random_array</a></code></li>
 <li><code><a title="check_assertion.main" href="#check_assertion.main">main</a></code></li>
