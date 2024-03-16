@@ -276,6 +276,7 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title=&#3
         (graph,) = pydot.graph_from_dot_data(dot_str)
         graph.write_png(title)
 
+
 color_names = &#39;&#39;&#39;
 aliceblue       antiquewhite    antiquewhite1   antiquewhite2   antiquewhite3
 antiquewhite4   aqua    aquamarine      aquamarine1     aquamarine2
@@ -444,6 +445,7 @@ steelblue       tan     teal    thistle tomato
 turquoise       violet  wheat   white   whitesmoke
 yellow  yellowgreen
 &#39;&#39;&#39;
+
 &#39;&#39;&#39;
 All colors available in dot notation. I couldn&#39;t figure out how to use hex in a dot file.
 &#39;&#39;&#39;
@@ -465,6 +467,7 @@ if __name__ == &#34;__main__&#34;:
 <section>
 <h2 class="section-title" id="header-variables">Global variables</h2>
 <dl>
+
 <dt id="check_assertion.color_list"><code class="name">var <span class="ident">color_list</span></code></dt>
 <dd>
 <div class="desc"><p>Turn the website text into a list of colors.</p></div>
@@ -472,6 +475,7 @@ if __name__ == &#34;__main__&#34;:
 <dt id="check_assertion.color_names"><code class="name">var <span class="ident">color_names</span></code></dt>
 <dd>
 <div class="desc"><p>All colors available in dot notation. I couldn't figure out how to use hex in a dot file.</p></div>
+
 </dd>
 </dl>
 </section>
@@ -479,7 +483,9 @@ if __name__ == &#34;__main__&#34;:
 <h2 class="section-title" id="header-functions">Functions</h2>
 <dl>
 <dt id="check_assertion.check_assertion"><code class="name flex">
+
 <span>def <span class="ident">check_assertion</span></span>(<span>G:�list[list], W:�list[list], init:�int)</span>
+
 </code></dt>
 <dd>
 <div class="desc"><p>check_assertions checks if the system satisfies the assertion.
@@ -577,7 +583,9 @@ Paramater: title - something to differentiate the display.</p></div>
 </details>
 </dd>
 <dt id="check_assertion.gen_random_fsm"><code class="name flex">
+
 <span>def <span class="ident">gen_random_fsm</span></span>(<span>state_count=7)</span>
+
 </code></dt>
 <dd>
 <div class="desc"><p>Create a completely randomized finite state machine with a given state count.
@@ -630,7 +638,9 @@ Returns an adjacency matrix, a state_response_grid, and init.</p></div>
 </details>
 </dd>
 <dt id="check_assertion.get_random_array"><code class="name flex">
+
 <span>def <span class="ident">get_random_array</span></span>(<span>beg:�int, length:�int, distribution:�float�=�0.5)</span>
+
 </code></dt>
 <dd>
 <div class="desc"><p>Make an array with a distribution.
@@ -709,7 +719,9 @@ Returns: a randomized list.</p></div>
 </details>
 </dd>
 <dt id="check_assertion.randfloat"><code class="name flex">
+
 <span>def <span class="ident">randfloat</span></span>(<span>low:�int, high:�int)</span>
+
 </code></dt>
 <dd>
 <div class="desc"><p>Return a bounded float.
@@ -816,7 +828,9 @@ Paramater: title - something to differentiate the display.</p></div>
 <ul id="index">
 <li><h3><a href="#header-variables">Global variables</a></h3>
 <ul class="">
+
 <li><code><a title="check_assertion.color_list" href="#check_assertion.color_list">color_list</a></code></li>
+
 <li><code><a title="check_assertion.color_names" href="#check_assertion.color_names">color_names</a></code></li>
 </ul>
 </li>
@@ -840,3 +854,4 @@ Paramater: title - something to differentiate the display.</p></div>
 </footer>
 </body>
 </html>
+
