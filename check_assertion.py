@@ -2,6 +2,7 @@ from random import random
 from random import randint
 import pip
 
+#Attempt to import pydot. Failing to import pydot will not result in program failure. It will only result in an inferior visualization.
 try:
 	import pydot
 except ImportError as e:
@@ -10,6 +11,7 @@ except ImportError as e:
 visualization_import_success = False
 try:
 	import pydot
+	#It is apparently possible to successfully import pydot, but not have access to the libraries. The following ensures access.
 	(test_graph,) = pydot.graph_from_dot_data('Graph name {A -> B}')
 	test_graph.create_png()
 	visualization_import_success = True
@@ -19,54 +21,76 @@ except:
 def check_assertion(G: list[list], W: list[list], init: int):
 	'''
 	check_assertions checks if the system satisfies the assertion.
-	G is an n-by-n array: G[i,j] = 1 iff there's a transition from state i to state j.
-	W is an n-by-2 array: W[i,0] = 1 iff gnt = 1 in state i, and W[i,1] = 1 iff req = 1 in state i.
-	init is an integer indicating the initial state.
+	Parameter: G is an n-by-n array: G[i,j] = 1 iff there's a transition from state i to state j.
+	Parameter: W is an n-by-2 array: W[i,0] = 1 iff gnt = 1 in state i, and W[i,1] = 1 iff req = 1 in state i.
+	Paramater: init is an integer indicating the initial state.
 	n is the number of states of the system.
+
+	Returns a satisfying trace.
 	'''
+	#Go through all states in W.
 	for i in range(len(W)):
-		if W[i][0] == 1:    # if gnt = 1
+		#Check if gnt is true for the state in question.
+		if W[i][0] == 1:
+			#Go through all transitions.
 			for j in range(len(G)):    # check all the transition from state i to j
-				if G[i][j] and not W[j][1]:    # if the transition occur and if the req is not 1, assertion fails
+				#Check if req is false for the connected state.
+				if G[i][j] and not W[j][1]:
+					#Return the failed trace.
 					return [i, j]
 	return []
 
 def main():
+	'''
+	The place where all the code happens.
+	'''
 	global graph_number
 	graph_number = 0
 
+	#The graph sizes.
 	sizes = [5, 10, 15]
-	for i in range(3):
+	for i in range(len(sizes)):
+		#Find a graph that passes the assertion and fails the assertion (so there are graphs of interest).
 		fsm_tracker = {'have_failed': False, 'have_passed': False}
 		while not fsm_tracker['have_failed'] or not fsm_tracker['have_passed']:
 			G, W, init = gen_random_fsm(sizes[i])
 			fsm_trace = check_assertion(G, W, init)
+			#If the fsm_trace is empty, there was no failing trace.
 
 			should_display = False
 
-			if not fsm_tracker['have_failed'] and len(fsm_trace) > 0:
+			if not fsm_tracker['have_failed'] and fsm_trace:
 				fsm_tracker['have_failed'] = True
 				should_display = True
-			elif not fsm_tracker['have_passed'] and len(fsm_trace) == 0:
+			elif not fsm_tracker['have_passed'] and not fsm_trace:
 				fsm_tracker['have_passed'] = True
 				should_display = True
 
 			if should_display:
+				#If the visualization libaries imported successfully, use fancy visualization of the graph and the trace. Otherwise use terminal display.
 				graph_number += 1
 
-				if visualization_import_success:
-					if len(fsm_trace) > 0:
-						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Fails Assertion).png')
-						create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, f'Graph {graph_number} ({sizes[i]} states - Fail Assertion Trace {fsm_trace}).png')
-					elif len(fsm_trace) == 0:
-						create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, f'Graph {graph_number} ({sizes[i]} states - Passes Assertion).png')
+				title = f'Graph {graph_number} ({sizes[i]} states - '
+				if len(fsm_trace) > 0:
+					title += 'Fails Assertion'
 				else:
-					terminal_display_matrix(G, W, init, f'Graph {graph_number} ({sizes[i]} states - Passing)')
+					title += 'Passes Assertion'
 
+				if visualization_import_success:
+					create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, title + ').png')
+					if len(fsm_trace) > 0:
+						create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, title + f' Trace {fsm_trace}).png')
+				else:
+					terminal_display_matrix(G, W, init, title + ')')
 					if len(fsm_trace) > 0:
 						print('Failure trace:\n' + ' -> '.join([str(state) for state in fsm_trace]) + '\n')
 
 def gen_random_fsm(state_count=randint(2, 10)):
+	'''
+	Create a completely randomized finite state machine with a given state count.
+	Returns an adjacency matrix, a state_response_grid, and init.
+	'''
+	#Make randomized adjacency matrix.
 	transition_map = []
 	for i in range(state_count):
 		transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .75)))
@@ -80,6 +104,8 @@ def gen_random_fsm(state_count=randint(2, 10)):
 			
 			transition_map[state_num][rand_index] = 1
 
+	#Create a randomized response grid.
+	#	The grid has a higher req/gnt density the more states there are (to promote successfull assertion graphs).
 	state_response_grid = []
 	for i in range(state_count):
 		top = state_count/15
@@ -96,49 +122,72 @@ def gen_random_fsm(state_count=randint(2, 10)):
 
 		state_response_grid.append(get_random_array(0, 2, distribution=randfloat(bottom, top)))
 	
+	#Random initial state.
 	init_state = randint(0, state_count-1)
 
 	return transition_map, state_response_grid, init_state
 
 def get_random_array(beg: int, length: int, distribution: float = .5):
+	'''
+	Make an array with a distribution.
+	Parameter: beg - where to start from.
+	Parameter: length - the length of the array.
+	Paramater: distribution - a number correlated with the randomized distribution (better than coin flip).
+	Returns: a randomized list.
+	'''
 	return [int(random() <= distribution and i >= beg) for i in range(length)]
 
 def randfloat(low: int, high: int):
 	'''
 	Return a bounded float.
+	Param
 	'''
 	return random() % (high-low) + low
 
 def terminal_display_matrix(matrix, state_responses, start_state=0, title=''):
 	'''
 	Display the matrix in the terminal.
+	Parameter: matrix - an adjacency matrix to display.
+	Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+	Parameter: start_state - the starting state of the graph.
+	Paramater: title - something to differentiate the display.
 	'''
 
 	output_str = ''
 
+	#Only add a title if there is one to add.
 	if len(title):
 		output_str += title + f', Starting State - S{start_state}\n'
 
+	#Add labels to the top.
 	output_str += '\t'.join(['-' if i < 2 else (str(i-2) if i-2 != start_state else f'*{i-2}') for i in range(len(matrix)+2)]) + '\n'
 	output_str += '\t'.join(['_' for i in range(len(matrix)+2)]) + '\n'
 
+	#Go through the adjacency matrix.
 	for x in range(len(matrix)):
+		#If the current state is the start state, put a * infront.
 		if x == start_state:
 			output_str += '*'
 		
+		#Put the incoming state on the left.
 		output_str += f'{x}\t|\t'
+		#Iterate through matrix.
 		for y in range(len(matrix)):
-			output_str += str(matrix[y][x])
+			#1 for transition existing, 0 for no transition.
+			output_str += str(matrix[x][y])
 
+			#Place a tab between each value.
 			if y < len(matrix) - 1:
 				output_str += ' \t'
 		
 		output_str += '\n'
-		
 	
+	#Display the conditionals.
 	output_str += '\nConditionals:\n'
 	output_str += '-\t-\tgnt\treq\n'
 	output_str += '\t'.join(['__' for i in range(len(state_responses[0]) + 2)]) + '\n'
+
+
 
 	for state_index in range(len(state_responses)):
 		if state_index == start_state:
@@ -154,17 +203,23 @@ def terminal_display_matrix(matrix, state_responses, start_state=0, title=''):
 
 def create_graph_visualization(matrix, state_responses, start_state=0, title='test.png'):
 	'''
-	Use dot notation to represent the bidirectional list.
+	Use dot notation to represent the bidirectional matrix.
+	Parameter: matrix - an adjacency matrix.
+	Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+	Parameter: start_state - the starting state of the graph.
+	Paramater: title - something to differentiate the display.
 	'''
 	dot_str = f'DIGRAPH graph_name ' + '{\n'
 	if 'list' in str(type(matrix[0])):
+		#Make starting node blue.
 		dot_str += f'S{start_state} [color=blue fontcolor=white style=filled]\n'
+		#Make any transition bidirectional (without needing to be intelligent about it).
 		dot_str += 'concentrate=true\n'
-	
 	
 	for state_index in state_responses:
 		attr = ''
 
+		#Add the state response in each state bubble.
 		if state_responses[state_index][0] and state_responses[state_index][1]:
 			attr = f'S{state_index} [label="S{state_index}\ngnt\nreq"]'
 		elif state_responses[state_index][0] and not state_responses[state_index][1]:
@@ -176,19 +231,26 @@ def create_graph_visualization(matrix, state_responses, start_state=0, title='te
 
 	if 'list' in str(type(matrix[0])):
 		for x in range(len(matrix)):
+			#Make a color for the transitions leaving a node.
 			color = color_list[randint(0, len(color_list)-1)]
 			for y in range(len(matrix)):
 				if matrix[x][y]:
+					#Add the transition and set it to be a color.
 					dot_str += f'S{x} -> S{y} [color={color} style=bold]\n'
 	else:
+		#If the matrix is not a list of lists, then it must be a trace, in which case we only need to show state to state (list of sequential states).
 		for x in range(len(matrix)-1):
 			dot_str += f'S{matrix[x]} -> S{matrix[x+1]}\n'
 
 	dot_str += '}'
 
-	graphs = pydot.graph_from_dot_data(dot_str)
-	graphs[0].write_png(title)
+	#Make a png.
+	(graph,) = pydot.graph_from_dot_data(dot_str)
+	graph.write_png(title)
 
+'''
+All colors available in dot notation. I couldn't figure out how to use hex in a dot file.
+'''
 color_names = '''
 aliceblue	antiquewhite	antiquewhite1	antiquewhite2	antiquewhite3
 antiquewhite4	aqua	aquamarine	aquamarine1	aquamarine2
@@ -358,11 +420,31 @@ turquoise	violet	wheat	white	whitesmoke
 yellow	yellowgreen
 '''
 
+'''Turn the website text into a list of colors.'''
 color_list = color_names.replace('\n\n', '').replace('\n', '\t').split('\t')
 color_list = color_list[1:-1]
+
+import os
+import sys
+from pdoc import html
+
+project_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+documentation_dir = os.path.join(project_dir, "docs")
+if not os.path.isdir(documentation_dir):
+    os.mkdir(documentation_dir)
+
+files = os.listdir(project_dir)
+for file_name in files:
+    if '.py' in file_name:
+        file_name = file_name.replace('.py', '')
+
+        f = open(os.path.join(documentation_dir, file_name + ".html"), "w")
+        f.write(html(file_name))
+        f.close()
 
 if __name__ == "__main__":
 	main()
 
+	#Let the user know about a better alternative.
 	if not visualization_import_success:
 		print('\nTo see advanced visualization. Run this program on flip. Trust us, it will be worth it.')

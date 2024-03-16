@@ -1,0 +1,855 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+<meta name="generator" content="pdoc 0.10.0" />
+<title>check_assertion API documentation</title>
+<meta name="description" content="" />
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
+<link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
+<link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
+<style>:root{--highlight-color:#fe9}.flex{display:flex !important}body{line-height:1.5em}#content{padding:20px}#sidebar{padding:30px;overflow:hidden}#sidebar > *:last-child{margin-bottom:2cm}.http-server-breadcrumbs{font-size:130%;margin:0 0 15px 0}#footer{font-size:.75em;padding:5px 30px;border-top:1px solid #ddd;text-align:right}#footer p{margin:0 0 0 1em;display:inline-block}#footer p:last-child{margin-right:30px}h1,h2,h3,h4,h5{font-weight:300}h1{font-size:2.5em;line-height:1.1em}h2{font-size:1.75em;margin:1em 0 .50em 0}h3{font-size:1.4em;margin:25px 0 10px 0}h4{margin:0;font-size:105%}h1:target,h2:target,h3:target,h4:target,h5:target,h6:target{background:var(--highlight-color);padding:.2em 0}a{color:#058;text-decoration:none;transition:color .3s ease-in-out}a:hover{color:#e82}.title code{font-weight:bold}h2[id^="header-"]{margin-top:2em}.ident{color:#900}pre code{background:#f8f8f8;font-size:.8em;line-height:1.4em}code{background:#f2f2f1;padding:1px 4px;overflow-wrap:break-word}h1 code{background:transparent}pre{background:#f8f8f8;border:0;border-top:1px solid #ccc;border-bottom:1px solid #ccc;margin:1em 0;padding:1ex}#http-server-module-list{display:flex;flex-flow:column}#http-server-module-list div{display:flex}#http-server-module-list dt{min-width:10%}#http-server-module-list p{margin-top:0}.toc ul,#index{list-style-type:none;margin:0;padding:0}#index code{background:transparent}#index h3{border-bottom:1px solid #ddd}#index ul{padding:0}#index h4{margin-top:.6em;font-weight:bold}@media (min-width:200ex){#index .two-column{column-count:2}}@media (min-width:300ex){#index .two-column{column-count:3}}dl{margin-bottom:2em}dl dl:last-child{margin-bottom:4em}dd{margin:0 0 1em 3em}#header-classes + dl > dd{margin-bottom:3em}dd dd{margin-left:2em}dd p{margin:10px 0}.name{background:#eee;font-weight:bold;font-size:.85em;padding:5px 10px;display:inline-block;min-width:40%}.name:hover{background:#e0e0e0}dt:target .name{background:var(--highlight-color)}.name > span:first-child{white-space:nowrap}.name.class > span:nth-child(2){margin-left:.4em}.inherited{color:#999;border-left:5px solid #eee;padding-left:1em}.inheritance em{font-style:normal;font-weight:bold}.desc h2{font-weight:400;font-size:1.25em}.desc h3{font-size:1em}.desc dt code{background:inherit}.source summary,.git-link-div{color:#666;text-align:right;font-weight:400;font-size:.8em;text-transform:uppercase}.source summary > *{white-space:nowrap;cursor:pointer}.git-link{color:inherit;margin-left:1em}.source pre{max-height:500px;overflow:auto;margin:0}.source pre code{font-size:12px;overflow:visible}.hlist{list-style:none}.hlist li{display:inline}.hlist li:after{content:',\2002'}.hlist li:last-child:after{content:none}.hlist .hlist{display:inline;padding-left:1em}img{max-width:100%}td{padding:0 .5em}.admonition{padding:.1em .5em;margin-bottom:1em}.admonition-title{font-weight:bold}.admonition.note,.admonition.info,.admonition.important{background:#aef}.admonition.todo,.admonition.versionadded,.admonition.tip,.admonition.hint{background:#dfd}.admonition.warning,.admonition.versionchanged,.admonition.deprecated{background:#fd4}.admonition.error,.admonition.danger,.admonition.caution{background:lightpink}</style>
+<style media="screen and (min-width: 700px)">@media screen and (min-width:700px){#sidebar{width:30%;height:100vh;overflow:auto;position:sticky;top:0}#content{width:70%;max-width:100ch;padding:3em 4em;border-left:1px solid #ddd}pre code{font-size:1em}.item .name{font-size:1em}main{display:flex;flex-direction:row-reverse;justify-content:flex-end}.toc ul ul,#index ul{padding-left:1.5em}.toc > ul > li{margin-top:.5em}}</style>
+<style media="print">@media print{#sidebar h1{page-break-before:always}.source{display:none}}@media print{*{background:transparent !important;color:#000 !important;box-shadow:none !important;text-shadow:none !important}a[href]:after{content:" (" attr(href) ")";font-size:90%}a[href][title]:after{content:none}abbr[title]:after{content:" (" attr(title) ")"}.ir a:after,a[href^="javascript:"]:after,a[href^="#"]:after{content:""}pre,blockquote{border:1px solid #999;page-break-inside:avoid}thead{display:table-header-group}tr,img{page-break-inside:avoid}img{max-width:100% !important}@page{margin:0.5cm}p,h2,h3{orphans:3;widows:3}h1,h2,h3,h4,h5,h6{page-break-after:avoid}}</style>
+<script defer src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/highlight.min.js" integrity="sha256-Uv3H6lx7dJmRfRvH8TH6kJD1TSK1aFcwgx+mdg3epi8=" crossorigin></script>
+<script>window.addEventListener('DOMContentLoaded', () => hljs.initHighlighting())</script>
+</head>
+<body>
+<main>
+<article id="content">
+<header>
+<h1 class="title">Module <code>check_assertion</code></h1>
+</header>
+<section id="section-intro">
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">from random import random
+from random import randint
+import pip
+
+#Attempt to import pydot. Failing to import pydot will not result in program failure. It will only result in an inferior visualization.
+try:
+        import pydot
+except ImportError as e:
+        pip.main([&#39;install&#39;, &#39;--no-python-version-warning&#39;, &#39;--force-reinstall&#39;, &#39;--upgrade&#39;, &#39;pydot&#39;])
+
+visualization_import_success = False
+try:
+        import pydot
+        #It is apparently possible to successfully import pydot, but not have access to the libraries. The following ensures access.
+        (test_graph,) = pydot.graph_from_dot_data(&#39;Graph name {A -&gt; B}&#39;)
+        test_graph.create_png()
+        visualization_import_success = True
+except:
+        visualization_import_success = False
+
+def check_assertion(G: list[list], W: list[list], init: int):
+        &#39;&#39;&#39;
+        check_assertions checks if the system satisfies the assertion.
+        Parameter: G is an n-by-n array: G[i,j] = 1 iff there&#39;s a transition from state i to state j.
+        Parameter: W is an n-by-2 array: W[i,0] = 1 iff gnt = 1 in state i, and W[i,1] = 1 iff req = 1 in state i.
+        Paramater: init is an integer indicating the initial state.
+        n is the number of states of the system.
+
+        Returns a satisfying trace.
+        &#39;&#39;&#39;
+        #Go through all states in W.
+        for i in range(len(W)):
+                #Check if gnt is true for the state in question.
+                if W[i][0] == 1:
+                        #Go through all transitions.
+                        for j in range(len(G)):    # check all the transition from state i to j
+                                #Check if req is false for the connected state.
+                                if G[i][j] and not W[j][1]:
+                                        #Return the failed trace.
+                                        return [i, j]
+        return []
+
+def main():
+        &#39;&#39;&#39;
+        The place where all the code happens.
+        &#39;&#39;&#39;
+        global graph_number
+        graph_number = 0
+
+        #The graph sizes.
+        sizes = [5, 10, 15]
+        for i in range(len(sizes)):
+                #Find a graph that passes the assertion and fails the assertion (so there are graphs of interest).
+                fsm_tracker = {&#39;have_failed&#39;: False, &#39;have_passed&#39;: False}
+                while not fsm_tracker[&#39;have_failed&#39;] or not fsm_tracker[&#39;have_passed&#39;]:
+                        G, W, init = gen_random_fsm(sizes[i])
+                        fsm_trace = check_assertion(G, W, init)
+                        #If the fsm_trace is empty, there was no failing trace.
+
+                        should_display = False
+
+                        if not fsm_tracker[&#39;have_failed&#39;] and fsm_trace:
+                                fsm_tracker[&#39;have_failed&#39;] = True
+                                should_display = True
+                        elif not fsm_tracker[&#39;have_passed&#39;] and not fsm_trace:
+                                fsm_tracker[&#39;have_passed&#39;] = True
+                                should_display = True
+
+                        if should_display:
+                                #If the visualization libaries imported successfully, use fancy visualization of the graph and the trace. Otherwise use terminal display.
+                                graph_number += 1
+
+                                title = f&#39;Graph {graph_number} ({sizes[i]} states - &#39;
+                                if len(fsm_trace) &gt; 0:
+                                        title += &#39;Fails Assertion&#39;
+                                else:
+                                        title += &#39;Passes Assertion&#39;
+
+                                if visualization_import_success:
+                                        create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, title + &#39;).png&#39;)
+                                        if len(fsm_trace) &gt; 0:
+                                                create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, title + f&#39; Trace {fsm_trace}).png&#39;)
+                                else:
+                                        terminal_display_matrix(G, W, init, title + &#39;)&#39;)
+                                        if len(fsm_trace) &gt; 0:
+                                                print(&#39;Failure trace:\n&#39; + &#39; -&gt; &#39;.join([str(state) for state in fsm_trace]) + &#39;\n&#39;)
+
+def gen_random_fsm(state_count=randint(2, 10)):
+        &#39;&#39;&#39;
+        Create a completely randomized finite state machine with a given state count.
+        Returns an adjacency matrix, a state_response_grid, and init.
+        &#39;&#39;&#39;
+        #Make randomized adjacency matrix.
+        transition_map = []
+        for i in range(state_count):
+                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .75)))
+
+        #Prevent transitionless state.
+        for state_num, transition_for_state in enumerate(transition_map):
+                while sum(transition_for_state) &lt; (2 if len(transition_for_state) &gt; 2 else len(transition_for_state) - 1):
+                        rand_index = randint(0, len(transition_for_state)-1)
+                        while rand_index == state_num:
+                                rand_index = randint(0, len(transition_for_state)-1)
+                        
+                        transition_map[state_num][rand_index] = 1
+
+        #Create a randomized response grid.
+        #       The grid has a higher req/gnt density the more states there are (to promote successfull assertion graphs).
+        state_response_grid = []
+        for i in range(state_count):
+                top = state_count/15
+                if top &gt; .9:
+                        top = .9
+                if top &lt; .7:
+                        top = .7
+                
+                bottom = state_count/20
+                if bottom &gt; .8:
+                        bottom = .8
+                if bottom &lt; .5:
+                        bottom = .5
+
+                state_response_grid.append(get_random_array(0, 2, distribution=randfloat(bottom, top)))
+        
+        #Random initial state.
+        init_state = randint(0, state_count-1)
+
+        return transition_map, state_response_grid, init_state
+
+def get_random_array(beg: int, length: int, distribution: float = .5):
+        &#39;&#39;&#39;
+        Make an array with a distribution.
+        Parameter: beg - where to start from.
+        Parameter: length - the length of the array.
+        Paramater: distribution - a number correlated with the randomized distribution (better than coin flip).
+        Returns: a randomized list.
+        &#39;&#39;&#39;
+        return [int(random() &lt;= distribution and i &gt;= beg) for i in range(length)]
+
+def randfloat(low: int, high: int):
+        &#39;&#39;&#39;
+        Return a bounded float.
+        Param
+        &#39;&#39;&#39;
+        return random() % (high-low) + low
+
+def terminal_display_matrix(matrix, state_responses, start_state=0, title=&#39;&#39;):
+        &#39;&#39;&#39;
+        Display the matrix in the terminal.
+        Parameter: matrix - an adjacency matrix to display.
+        Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+        Parameter: start_state - the starting state of the graph.
+        Paramater: title - something to differentiate the display.
+        &#39;&#39;&#39;
+
+        output_str = &#39;&#39;
+
+        #Only add a title if there is one to add.
+        if len(title):
+                output_str += title + f&#39;, Starting State - S{start_state}\n&#39;
+
+        #Add labels to the top.
+        output_str += &#39;\t&#39;.join([&#39;-&#39; if i &lt; 2 else (str(i-2) if i-2 != start_state else f&#39;*{i-2}&#39;) for i in range(len(matrix)+2)]) + &#39;\n&#39;
+        output_str += &#39;\t&#39;.join([&#39;_&#39; for i in range(len(matrix)+2)]) + &#39;\n&#39;
+
+        #Go through the adjacency matrix.
+        for x in range(len(matrix)):
+                #If the current state is the start state, put a * infront.
+                if x == start_state:
+                        output_str += &#39;*&#39;
+                
+                #Put the incoming state on the left.
+                output_str += f&#39;{x}\t|\t&#39;
+                #Iterate through matrix.
+                for y in range(len(matrix)):
+                        #1 for transition existing, 0 for no transition.
+                        output_str += str(matrix[x][y])
+
+                        #Place a tab between each value.
+                        if y &lt; len(matrix) - 1:
+                                output_str += &#39; \t&#39;
+                
+                output_str += &#39;\n&#39;
+        
+        #Display the conditionals.
+        output_str += &#39;\nConditionals:\n&#39;
+        output_str += &#39;-\t-\tgnt\treq\n&#39;
+        output_str += &#39;\t&#39;.join([&#39;__&#39; for i in range(len(state_responses[0]) + 2)]) + &#39;\n&#39;
+
+
+
+        for state_index in range(len(state_responses)):
+                if state_index == start_state:
+                        output_str += &#39;*&#39;
+                
+                output_str += f&#39;{state_index}\t|\t&#39;
+
+                output_str += &#39;\t&#39;.join([str(i) for i in state_responses[state_index]])
+        
+                output_str += &#39;\n&#39;
+
+        print(output_str)
+
+def create_graph_visualization(matrix, state_responses, start_state=0, title=&#39;test.png&#39;):
+        &#39;&#39;&#39;
+        Use dot notation to represent the bidirectional matrix.
+        Parameter: matrix - an adjacency matrix.
+        Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+        Parameter: start_state - the starting state of the graph.
+        Paramater: title - something to differentiate the display.
+        &#39;&#39;&#39;
+        dot_str = f&#39;DIGRAPH graph_name &#39; + &#39;{\n&#39;
+        if &#39;list&#39; in str(type(matrix[0])):
+                #Make starting node blue.
+                dot_str += f&#39;S{start_state} [color=blue fontcolor=white style=filled]\n&#39;
+                #Make any transition bidirectional (without needing to be intelligent about it).
+                dot_str += &#39;concentrate=true\n&#39;
+        
+        for state_index in state_responses:
+                attr = &#39;&#39;
+
+                #Add the state response in each state bubble.
+                if state_responses[state_index][0] and state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\ngnt\nreq&#34;]&#39;
+                elif state_responses[state_index][0] and not state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\ngnt&#34;]&#39;
+                elif not state_responses[state_index][0] and state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\nreq&#34;]&#39;
+        
+                dot_str += attr + &#39;\n&#39;
+
+        if &#39;list&#39; in str(type(matrix[0])):
+                for x in range(len(matrix)):
+                        #Make a color for the transitions leaving a node.
+                        color = color_list[randint(0, len(color_list)-1)]
+                        for y in range(len(matrix)):
+                                if matrix[x][y]:
+                                        #Add the transition and set it to be a color.
+                                        dot_str += f&#39;S{x} -&gt; S{y} [color={color} style=bold]\n&#39;
+        else:
+                #If the matrix is not a list of lists, then it must be a trace, in which case we only need to show state to state (list of sequential states).
+                for x in range(len(matrix)-1):
+                        dot_str += f&#39;S{matrix[x]} -&gt; S{matrix[x+1]}\n&#39;
+
+        dot_str += &#39;}&#39;
+
+        #Make a png.
+        (graph,) = pydot.graph_from_dot_data(dot_str)
+        graph.write_png(title)
+
+&#39;&#39;&#39;
+All colors available in dot notation. I couldn&#39;t figure out how to use hex in a dot file.
+&#39;&#39;&#39;
+color_names = &#39;&#39;&#39;
+aliceblue       antiquewhite    antiquewhite1   antiquewhite2   antiquewhite3
+antiquewhite4   aqua    aquamarine      aquamarine1     aquamarine2
+aquamarine3     aquamarine4     azure   azure1  azure2
+azure3  azure4  beige   bisque  bisque1
+bisque2 bisque3 bisque4 black   blanchedalmond
+blue    blue1   blue2   blue3   blue4
+blueviolet      brown   brown1  brown2  brown3
+brown4  burlywood       burlywood1      burlywood2      burlywood3
+burlywood4      cadetblue       cadetblue1      cadetblue2      cadetblue3
+cadetblue4      chartreuse      chartreuse1     chartreuse2     chartreuse3
+chartreuse4     chocolate       chocolate1      chocolate2      chocolate3
+chocolate4      coral   coral1  coral2  coral3
+coral4  cornflowerblue  cornsilk        cornsilk1       cornsilk2
+cornsilk3       cornsilk4       crimson cyan    cyan1
+cyan2   cyan3   cyan4   darkblue        darkcyan
+darkgoldenrod   darkgoldenrod1  darkgoldenrod2  darkgoldenrod3  darkgoldenrod4
+darkgray        darkgreen       darkgrey        darkkhaki       darkmagenta
+darkolivegreen  darkolivegreen1 darkolivegreen2 darkolivegreen3 darkolivegreen4
+darkorange      darkorange1     darkorange2     darkorange3     darkorange4
+darkorchid      darkorchid1     darkorchid2     darkorchid3     darkorchid4
+darkred darksalmon      darkseagreen    darkseagreen1   darkseagreen2
+darkseagreen3   darkseagreen4   darkslateblue   darkslategray   darkslategray1
+darkslategray2  darkslategray3  darkslategray4  darkslategrey   darkturquoise
+darkviolet      deeppink        deeppink1       deeppink2       deeppink3
+deeppink4       deepskyblue     deepskyblue1    deepskyblue2    deepskyblue3
+deepskyblue4    dimgray dimgrey dodgerblue      dodgerblue1
+dodgerblue2     dodgerblue3     dodgerblue4     firebrick       firebrick1
+firebrick2      firebrick3      firebrick4      floralwhite     forestgreen
+fuchsia gainsboro       ghostwhite      gold    gold1
+gold2   gold3   gold4   goldenrod       goldenrod1
+goldenrod2      goldenrod3      goldenrod4      gray    gray0
+gray1   gray10  gray100 gray11  gray12
+gray13  gray14  gray15  gray16  gray17
+gray18  gray19  gray2   gray20  gray21
+gray22  gray23  gray24  gray25  gray26
+gray27  gray28  gray29  gray3   gray30
+gray31  gray32  gray33  gray34  gray35
+gray36  gray37  gray38  gray39  gray4
+gray40  gray41  gray42  gray43  gray44
+gray45  gray46  gray47  gray48  gray49
+gray5   gray50  gray51  gray52  gray53
+gray54  gray55  gray56  gray57  gray58
+gray59  gray6   gray60  gray61  gray62
+gray63  gray64  gray65  gray66  gray67
+gray68  gray69  gray7   gray70  gray71
+gray72  gray73  gray74  gray75  gray76
+gray77  gray78  gray79  gray8   gray80
+gray81  gray82  gray83  gray84  gray85
+gray86  gray87  gray88  gray89  gray9
+gray90  gray91  gray92  gray93  gray94
+gray95  gray96  gray97  gray98  gray99
+green   green1  green2  green3  green4
+greenyellow     grey    grey0   grey1   grey10
+grey100 grey11  grey12  grey13  grey14
+grey15  grey16  grey17  grey18  grey19
+grey2   grey20  grey21  grey22  grey23
+grey24  grey25  grey26  grey27  grey28
+grey29  grey3   grey30  grey31  grey32
+grey33  grey34  grey35  grey36  grey37
+grey38  grey39  grey4   grey40  grey41
+grey42  grey43  grey44  grey45  grey46
+grey47  grey48  grey49  grey5   grey50
+grey51  grey52  grey53  grey54  grey55
+grey56  grey57  grey58  grey59  grey6
+grey60  grey61  grey62  grey63  grey64
+grey65  grey66  grey67  grey68  grey69
+grey7   grey70  grey71  grey72  grey73
+grey74  grey75  grey76  grey77  grey78
+grey79  grey8   grey80  grey81  grey82
+grey83  grey84  grey85  grey86  grey87
+grey88  grey89  grey9   grey90  grey91
+grey92  grey93  grey94  grey95  grey96
+grey97  grey98  grey99  honeydew        honeydew1
+honeydew2       honeydew3       honeydew4       hotpink hotpink1
+hotpink2        hotpink3        hotpink4        indianred       indianred1
+indianred2      indianred3      indianred4      indigo  invis
+ivory   ivory1  ivory2  ivory3  ivory4
+khaki   khaki1  khaki2  khaki3  khaki4
+lavender        lavenderblush   lavenderblush1  lavenderblush2  lavenderblush3
+lavenderblush4  lawngreen       lemonchiffon    lemonchiffon1   lemonchiffon2
+lemonchiffon3   lemonchiffon4   lightblue       lightblue1      lightblue2
+lightblue3      lightblue4      lightcoral      lightcyan       lightcyan1
+lightcyan2      lightcyan3      lightcyan4      lightgoldenrod  lightgoldenrod1
+lightgoldenrod2 lightgoldenrod3 lightgoldenrod4 lightgoldenrodyellow    lightgray
+lightgreen      lightgrey       lightpink       lightpink1      lightpink2
+lightpink3      lightpink4      lightsalmon     lightsalmon1    lightsalmon2
+lightsalmon3    lightsalmon4    lightseagreen   lightskyblue    lightskyblue1
+lightskyblue2   lightskyblue3   lightskyblue4   lightslateblue  lightslategray
+lightslategrey  lightsteelblue  lightsteelblue1 lightsteelblue2 lightsteelblue3
+lightsteelblue4 lightyellow     lightyellow1    lightyellow2    lightyellow3
+lightyellow4    lime    limegreen       linen   magenta
+magenta1        magenta2        magenta3        magenta4        maroon
+maroon1 maroon2 maroon3 maroon4 mediumaquamarine
+mediumblue      mediumorchid    mediumorchid1   mediumorchid2   mediumorchid3
+mediumorchid4   mediumpurple    mediumpurple1   mediumpurple2   mediumpurple3
+mediumpurple4   mediumseagreen  mediumslateblue mediumspringgreen       mediumturquoise
+mediumvioletred midnightblue    mintcream       mistyrose       mistyrose1
+mistyrose2      mistyrose3      mistyrose4      moccasin        navajowhite
+navajowhite1    navajowhite2    navajowhite3    navajowhite4    navy
+navyblue        none    oldlace olive   olivedrab
+olivedrab1      olivedrab2      olivedrab3      olivedrab4      orange
+orange1 orange2 orange3 orange4 orangered
+orangered1      orangered2      orangered3      orangered4      orchid
+orchid1 orchid2 orchid3 orchid4 palegoldenrod
+palegreen       palegreen1      palegreen2      palegreen3      palegreen4
+paleturquoise   paleturquoise1  paleturquoise2  paleturquoise3  paleturquoise4
+palevioletred   palevioletred1  palevioletred2  palevioletred3  palevioletred4
+papayawhip      peachpuff       peachpuff1      peachpuff2      peachpuff3
+peachpuff4      peru    pink    pink1   pink2
+pink3   pink4   plum    plum1   plum2
+plum3   plum4   powderblue      purple  purple1
+purple2 purple3 purple4 rebeccapurple   red
+red1    red2    red3    red4    rosybrown
+rosybrown1      rosybrown2      rosybrown3      rosybrown4      royalblue
+royalblue1      royalblue2      royalblue3      royalblue4      saddlebrown
+salmon  salmon1 salmon2 salmon3 salmon4
+sandybrown      seagreen        seagreen1       seagreen2       seagreen3
+seagreen4       seashell        seashell1       seashell2       seashell3
+seashell4       sienna  sienna1 sienna2 sienna3
+sienna4 silver  skyblue skyblue1        skyblue2
+skyblue3        skyblue4        slateblue       slateblue1      slateblue2
+slateblue3      slateblue4      slategray       slategray1      slategray2
+slategray3      slategray4      slategrey       snow    snow1
+snow2   snow3   snow4   springgreen     springgreen1
+springgreen2    springgreen3    springgreen4    steelblue       steelblue1
+steelblue2      steelblue3      steelblue4      tan     tan1
+tan2    tan3    tan4    teal    thistle
+thistle1        thistle2        thistle3        thistle4        tomato
+tomato1 tomato2 tomato3 tomato4 transparent
+turquoise       turquoise1      turquoise2      turquoise3      turquoise4
+violet  violetred       violetred1      violetred2      violetred3
+violetred4      webgray webgreen        webgrey webmaroon
+webpurple       wheat   wheat1  wheat2  wheat3
+wheat4  white   whitesmoke      x11gray x11green
+x11grey x11maroon       x11purple       yellow  yellow1
+yellow2 yellow3 yellow4 yellowgreen
+aliceblue       antiquewhite    aqua    aquamarine      azure
+beige   bisque  black   blanchedalmond  blue
+blueviolet      brown   burlywood       cadetblue       chartreuse
+chocolate       coral   cornflowerblue  cornsilk        crimson
+cyan    darkblue        darkcyan        darkgoldenrod   darkgray
+darkgreen       darkgrey        darkkhaki       darkmagenta     darkolivegreen
+darkorange      darkorchid      darkred darksalmon      darkseagreen
+darkslateblue   darkslategray   darkslategrey   darkturquoise   darkviolet
+deeppink        deepskyblue     dimgray dimgrey dodgerblue
+firebrick       floralwhite     forestgreen     fuchsia gainsboro
+ghostwhite      gold    goldenrod       gray    grey
+green   greenyellow     honeydew        hotpink indianred
+indigo  ivory   khaki   lavender        lavenderblush
+lawngreen       lemonchiffon    lightblue       lightcoral      lightcyan
+lightgoldenrodyellow    lightgray       lightgreen      lightgrey       lightpink
+lightsalmon     lightseagreen   lightskyblue    lightslategray  lightslategrey
+lightsteelblue  lightyellow     lime    limegreen       linen
+magenta maroon  mediumaquamarine        mediumblue      mediumorchid
+mediumpurple    mediumseagreen  mediumslateblue mediumspringgreen       mediumturquoise
+mediumvioletred midnightblue    mintcream       mistyrose       moccasin
+navajowhite     navy    oldlace olive   olivedrab
+orange  orangered       orchid  palegoldenrod   palegreen
+paleturquoise   palevioletred   papayawhip      peachpuff       peru
+pink    plum    powderblue      purple  red
+rosybrown       royalblue       saddlebrown     salmon  sandybrown
+seagreen        seashell        sienna  silver  skyblue
+slateblue       slategray       slategrey       snow    springgreen
+steelblue       tan     teal    thistle tomato
+turquoise       violet  wheat   white   whitesmoke
+yellow  yellowgreen
+&#39;&#39;&#39;
+
+&#39;&#39;&#39;Turn the website text into a list of colors.&#39;&#39;&#39;
+color_list = color_names.replace(&#39;\n\n&#39;, &#39;&#39;).replace(&#39;\n&#39;, &#39;\t&#39;).split(&#39;\t&#39;)
+color_list = color_list[1:-1]
+
+import os
+import sys
+from pdoc import html
+
+project_dir = os.path.dirname(os.path.abspath(sys.argv[0]))
+documentation_dir = os.path.join(project_dir, &#34;docs&#34;)
+if not os.path.isdir(documentation_dir):
+    os.mkdir(documentation_dir)
+
+files = os.listdir(project_dir)
+for file_name in files:
+    if &#39;.py&#39; in file_name:
+        file_name = file_name.replace(&#39;.py&#39;, &#39;&#39;)
+
+        f = open(os.path.join(documentation_dir, file_name + &#34;.html&#34;), &#34;w&#34;)
+        f.write(html(file_name))
+        f.close()
+
+if __name__ == &#34;__main__&#34;:
+        main()
+
+        #Let the user know about a better alternative.
+        if not visualization_import_success:
+                print(&#39;\nTo see advanced visualization. Run this program on flip. Trust us, it will be worth it.&#39;)</code></pre>
+</details>
+</section>
+<section>
+</section>
+<section>
+<h2 class="section-title" id="header-variables">Global variables</h2>
+<dl>
+<dt id="check_assertion.color_names"><code class="name">var <span class="ident">color_names</span></code></dt>
+<dd>
+<div class="desc"><p>Turn the website text into a list of colors.</p></div>
+</dd>
+</dl>
+</section>
+<section>
+<h2 class="section-title" id="header-functions">Functions</h2>
+<dl>
+<dt id="check_assertion.check_assertion"><code class="name flex">
+<span>def <span class="ident">check_assertion</span></span>(<span>G: list[list], W: list[list], init: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>check_assertions checks if the system satisfies the assertion.
+Parameter: G is an n-by-n array: G[i,j] = 1 iff there's a transition from state i to state j.
+Parameter: W is an n-by-2 array: W[i,0] = 1 iff gnt = 1 in state i, and W[i,1] = 1 iff req = 1 in state i.
+Paramater: init is an integer indicating the initial state.
+n is the number of states of the system.</p>
+<p>Returns a satisfying trace.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def check_assertion(G: list[list], W: list[list], init: int):
+        &#39;&#39;&#39;
+        check_assertions checks if the system satisfies the assertion.
+        Parameter: G is an n-by-n array: G[i,j] = 1 iff there&#39;s a transition from state i to state j.
+        Parameter: W is an n-by-2 array: W[i,0] = 1 iff gnt = 1 in state i, and W[i,1] = 1 iff req = 1 in state i.
+        Paramater: init is an integer indicating the initial state.
+        n is the number of states of the system.
+
+        Returns a satisfying trace.
+        &#39;&#39;&#39;
+        #Go through all states in W.
+        for i in range(len(W)):
+                #Check if gnt is true for the state in question.
+                if W[i][0] == 1:
+                        #Go through all transitions.
+                        for j in range(len(G)):    # check all the transition from state i to j
+                                #Check if req is false for the connected state.
+                                if G[i][j] and not W[j][1]:
+                                        #Return the failed trace.
+                                        return [i, j]
+        return []</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.create_graph_visualization"><code class="name flex">
+<span>def <span class="ident">create_graph_visualization</span></span>(<span>matrix, state_responses, start_state=0, title='test.png')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Use dot notation to represent the bidirectional matrix.
+Parameter: matrix - an adjacency matrix.
+Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+Parameter: start_state - the starting state of the graph.
+Paramater: title - something to differentiate the display.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def create_graph_visualization(matrix, state_responses, start_state=0, title=&#39;test.png&#39;):
+        &#39;&#39;&#39;
+        Use dot notation to represent the bidirectional matrix.
+        Parameter: matrix - an adjacency matrix.
+        Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+        Parameter: start_state - the starting state of the graph.
+        Paramater: title - something to differentiate the display.
+        &#39;&#39;&#39;
+        dot_str = f&#39;DIGRAPH graph_name &#39; + &#39;{\n&#39;
+        if &#39;list&#39; in str(type(matrix[0])):
+                #Make starting node blue.
+                dot_str += f&#39;S{start_state} [color=blue fontcolor=white style=filled]\n&#39;
+                #Make any transition bidirectional (without needing to be intelligent about it).
+                dot_str += &#39;concentrate=true\n&#39;
+        
+        for state_index in state_responses:
+                attr = &#39;&#39;
+
+                #Add the state response in each state bubble.
+                if state_responses[state_index][0] and state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\ngnt\nreq&#34;]&#39;
+                elif state_responses[state_index][0] and not state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\ngnt&#34;]&#39;
+                elif not state_responses[state_index][0] and state_responses[state_index][1]:
+                        attr = f&#39;S{state_index} [label=&#34;S{state_index}\nreq&#34;]&#39;
+        
+                dot_str += attr + &#39;\n&#39;
+
+        if &#39;list&#39; in str(type(matrix[0])):
+                for x in range(len(matrix)):
+                        #Make a color for the transitions leaving a node.
+                        color = color_list[randint(0, len(color_list)-1)]
+                        for y in range(len(matrix)):
+                                if matrix[x][y]:
+                                        #Add the transition and set it to be a color.
+                                        dot_str += f&#39;S{x} -&gt; S{y} [color={color} style=bold]\n&#39;
+        else:
+                #If the matrix is not a list of lists, then it must be a trace, in which case we only need to show state to state (list of sequential states).
+                for x in range(len(matrix)-1):
+                        dot_str += f&#39;S{matrix[x]} -&gt; S{matrix[x+1]}\n&#39;
+
+        dot_str += &#39;}&#39;
+
+        #Make a png.
+        (graph,) = pydot.graph_from_dot_data(dot_str)
+        graph.write_png(title)</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.gen_random_fsm"><code class="name flex">
+<span>def <span class="ident">gen_random_fsm</span></span>(<span>state_count=4)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Create a completely randomized finite state machine with a given state count.
+Returns an adjacency matrix, a state_response_grid, and init.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def gen_random_fsm(state_count=randint(2, 10)):
+        &#39;&#39;&#39;
+        Create a completely randomized finite state machine with a given state count.
+        Returns an adjacency matrix, a state_response_grid, and init.
+        &#39;&#39;&#39;
+        #Make randomized adjacency matrix.
+        transition_map = []
+        for i in range(state_count):
+                transition_map.append(get_random_array(0, state_count, distribution=randfloat(.25, .75)))
+
+        #Prevent transitionless state.
+        for state_num, transition_for_state in enumerate(transition_map):
+                while sum(transition_for_state) &lt; (2 if len(transition_for_state) &gt; 2 else len(transition_for_state) - 1):
+                        rand_index = randint(0, len(transition_for_state)-1)
+                        while rand_index == state_num:
+                                rand_index = randint(0, len(transition_for_state)-1)
+                        
+                        transition_map[state_num][rand_index] = 1
+
+        #Create a randomized response grid.
+        #       The grid has a higher req/gnt density the more states there are (to promote successfull assertion graphs).
+        state_response_grid = []
+        for i in range(state_count):
+                top = state_count/15
+                if top &gt; .9:
+                        top = .9
+                if top &lt; .7:
+                        top = .7
+                
+                bottom = state_count/20
+                if bottom &gt; .8:
+                        bottom = .8
+                if bottom &lt; .5:
+                        bottom = .5
+
+                state_response_grid.append(get_random_array(0, 2, distribution=randfloat(bottom, top)))
+        
+        #Random initial state.
+        init_state = randint(0, state_count-1)
+
+        return transition_map, state_response_grid, init_state</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.get_random_array"><code class="name flex">
+<span>def <span class="ident">get_random_array</span></span>(<span>beg: int, length: int, distribution: float = 0.5)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Make an array with a distribution.
+Parameter: beg - where to start from.
+Parameter: length - the length of the array.
+Paramater: distribution - a number correlated with the randomized distribution (better than coin flip).
+Returns: a randomized list.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def get_random_array(beg: int, length: int, distribution: float = .5):
+        &#39;&#39;&#39;
+        Make an array with a distribution.
+        Parameter: beg - where to start from.
+        Parameter: length - the length of the array.
+        Paramater: distribution - a number correlated with the randomized distribution (better than coin flip).
+        Returns: a randomized list.
+        &#39;&#39;&#39;
+        return [int(random() &lt;= distribution and i &gt;= beg) for i in range(length)]</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.main"><code class="name flex">
+<span>def <span class="ident">main</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>The place where all the code happens.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def main():
+        &#39;&#39;&#39;
+        The place where all the code happens.
+        &#39;&#39;&#39;
+        global graph_number
+        graph_number = 0
+
+        #The graph sizes.
+        sizes = [5, 10, 15]
+        for i in range(len(sizes)):
+                #Find a graph that passes the assertion and fails the assertion (so there are graphs of interest).
+                fsm_tracker = {&#39;have_failed&#39;: False, &#39;have_passed&#39;: False}
+                while not fsm_tracker[&#39;have_failed&#39;] or not fsm_tracker[&#39;have_passed&#39;]:
+                        G, W, init = gen_random_fsm(sizes[i])
+                        fsm_trace = check_assertion(G, W, init)
+                        #If the fsm_trace is empty, there was no failing trace.
+
+                        should_display = False
+
+                        if not fsm_tracker[&#39;have_failed&#39;] and fsm_trace:
+                                fsm_tracker[&#39;have_failed&#39;] = True
+                                should_display = True
+                        elif not fsm_tracker[&#39;have_passed&#39;] and not fsm_trace:
+                                fsm_tracker[&#39;have_passed&#39;] = True
+                                should_display = True
+
+                        if should_display:
+                                #If the visualization libaries imported successfully, use fancy visualization of the graph and the trace. Otherwise use terminal display.
+                                graph_number += 1
+
+                                title = f&#39;Graph {graph_number} ({sizes[i]} states - &#39;
+                                if len(fsm_trace) &gt; 0:
+                                        title += &#39;Fails Assertion&#39;
+                                else:
+                                        title += &#39;Passes Assertion&#39;
+
+                                if visualization_import_success:
+                                        create_graph_visualization(G, {state_number: W[state_number] for state_number in range(len(W))}, init, title + &#39;).png&#39;)
+                                        if len(fsm_trace) &gt; 0:
+                                                create_graph_visualization(fsm_trace, {state_number: W[state_number] for state_number in list(set(fsm_trace))}, init, title + f&#39; Trace {fsm_trace}).png&#39;)
+                                else:
+                                        terminal_display_matrix(G, W, init, title + &#39;)&#39;)
+                                        if len(fsm_trace) &gt; 0:
+                                                print(&#39;Failure trace:\n&#39; + &#39; -&gt; &#39;.join([str(state) for state in fsm_trace]) + &#39;\n&#39;)</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.randfloat"><code class="name flex">
+<span>def <span class="ident">randfloat</span></span>(<span>low: int, high: int)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Return a bounded float.
+Param</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def randfloat(low: int, high: int):
+        &#39;&#39;&#39;
+        Return a bounded float.
+        Param
+        &#39;&#39;&#39;
+        return random() % (high-low) + low</code></pre>
+</details>
+</dd>
+<dt id="check_assertion.random"><code class="name flex">
+<span>def <span class="ident">random</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>random() -&gt; x in the interval [0, 1).</p></div>
+</dd>
+<dt id="check_assertion.terminal_display_matrix"><code class="name flex">
+<span>def <span class="ident">terminal_display_matrix</span></span>(<span>matrix, state_responses, start_state=0, title='')</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Display the matrix in the terminal.
+Parameter: matrix - an adjacency matrix to display.
+Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+Parameter: start_state - the starting state of the graph.
+Paramater: title - something to differentiate the display.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def terminal_display_matrix(matrix, state_responses, start_state=0, title=&#39;&#39;):
+        &#39;&#39;&#39;
+        Display the matrix in the terminal.
+        Parameter: matrix - an adjacency matrix to display.
+        Parameter: state_responses - a state wise map where [0] represents gnt and [1] represents req.
+        Parameter: start_state - the starting state of the graph.
+        Paramater: title - something to differentiate the display.
+        &#39;&#39;&#39;
+
+        output_str = &#39;&#39;
+
+        #Only add a title if there is one to add.
+        if len(title):
+                output_str += title + f&#39;, Starting State - S{start_state}\n&#39;
+
+        #Add labels to the top.
+        output_str += &#39;\t&#39;.join([&#39;-&#39; if i &lt; 2 else (str(i-2) if i-2 != start_state else f&#39;*{i-2}&#39;) for i in range(len(matrix)+2)]) + &#39;\n&#39;
+        output_str += &#39;\t&#39;.join([&#39;_&#39; for i in range(len(matrix)+2)]) + &#39;\n&#39;
+
+        #Go through the adjacency matrix.
+        for x in range(len(matrix)):
+                #If the current state is the start state, put a * infront.
+                if x == start_state:
+                        output_str += &#39;*&#39;
+                
+                #Put the incoming state on the left.
+                output_str += f&#39;{x}\t|\t&#39;
+                #Iterate through matrix.
+                for y in range(len(matrix)):
+                        #1 for transition existing, 0 for no transition.
+                        output_str += str(matrix[x][y])
+
+                        #Place a tab between each value.
+                        if y &lt; len(matrix) - 1:
+                                output_str += &#39; \t&#39;
+                
+                output_str += &#39;\n&#39;
+        
+        #Display the conditionals.
+        output_str += &#39;\nConditionals:\n&#39;
+        output_str += &#39;-\t-\tgnt\treq\n&#39;
+        output_str += &#39;\t&#39;.join([&#39;__&#39; for i in range(len(state_responses[0]) + 2)]) + &#39;\n&#39;
+
+
+
+        for state_index in range(len(state_responses)):
+                if state_index == start_state:
+                        output_str += &#39;*&#39;
+                
+                output_str += f&#39;{state_index}\t|\t&#39;
+
+                output_str += &#39;\t&#39;.join([str(i) for i in state_responses[state_index]])
+        
+                output_str += &#39;\n&#39;
+
+        print(output_str)</code></pre>
+</details>
+</dd>
+</dl>
+</section>
+<section>
+</section>
+</article>
+<nav id="sidebar">
+<h1>Index</h1>
+<div class="toc">
+<ul></ul>
+</div>
+<ul id="index">
+<li><h3><a href="#header-variables">Global variables</a></h3>
+<ul class="">
+<li><code><a title="check_assertion.color_names" href="#check_assertion.color_names">color_names</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-functions">Functions</a></h3>
+<ul class="">
+<li><code><a title="check_assertion.check_assertion" href="#check_assertion.check_assertion">check_assertion</a></code></li>
+<li><code><a title="check_assertion.create_graph_visualization" href="#check_assertion.create_graph_visualization">create_graph_visualization</a></code></li>
+<li><code><a title="check_assertion.gen_random_fsm" href="#check_assertion.gen_random_fsm">gen_random_fsm</a></code></li>
+<li><code><a title="check_assertion.get_random_array" href="#check_assertion.get_random_array">get_random_array</a></code></li>
+<li><code><a title="check_assertion.main" href="#check_assertion.main">main</a></code></li>
+<li><code><a title="check_assertion.randfloat" href="#check_assertion.randfloat">randfloat</a></code></li>
+<li><code><a title="check_assertion.random" href="#check_assertion.random">random</a></code></li>
+<li><code><a title="check_assertion.terminal_display_matrix" href="#check_assertion.terminal_display_matrix">terminal_display_matrix</a></code></li>
+</ul>
+</li>
+</ul>
+</nav>
+</main>
+<footer id="footer">
+<p>Generated by <a href="https://pdoc3.github.io/pdoc" title="pdoc: Python API documentation generator"><cite>pdoc</cite> 0.10.0</a>.</p>
+</footer>
+</body>
+</html>
